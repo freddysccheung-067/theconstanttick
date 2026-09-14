@@ -35,15 +35,6 @@ Two tooth flanks (an epicycloid face and a hypocycloid flank, generated independ
 
 So what does the cycloid actually do better? The peak sliding-speed ratio between the two profiles equals the peak-|PC| ratio to 6×10⁻¹³. The cycloid does not slide less per unit of distance from the pitch point — it slides at *exactly* the same rate as the involute. Its entire advantage is that its contact path stays closer to the pitch point. **Contact-path geometry, not rolling.**
 
- Running it
-
-```bash
-pip install -r requirements.txt
-python analysis/falsify.py       # runs the experiment, writes results/results.json
-python analysis/make_figure.py   # writes results/fig0_no_rolling.png
-pytest tests/ -q                 # 19 tests
-```
-
 ## Method, in more detail
 
 Each flank is generated in its own body frame from the classical rolling construction (epicycloid, hypocycloid, involute), and then **the construction is discarded** — the solver receives only a parametric curve `c(t)` and its derivative. For a point `u` on flank 1, it solves for `(v, θ₁, θ₂)` satisfying:
