@@ -8,6 +8,12 @@ Horological texts, manufacturer pages, and forum consensus justify the cycloidal
 
 Two tooth flanks (an epicycloid face and a hypocycloid flank, generated independently) are handed to a contact solver as bare parametric curves. The solver finds where they touch and how they move — nothing about gear ratios, contact paths, or sliding is assumed going in. All of it comes out the other end as a *result*.
 
+> **On novelty:** the literature search for this project is not yet complete. The
+> arc-length identity used in the wheel-and-road test (§ below) is elementary and
+> very likely already known — possibly classical. Nothing in this repository is
+> claimed as a new result until that search is finished. What *is* claimed is that
+> every number here was computed, not assumed, and can be independently checked.
+
 | Quantity | Computed | What it means |
 |---|---|---|
 | velocity ratio θ₂/θ₁ | −7.5 ± 6×10⁻¹¹ | equals −R₁/R₂ exactly — conjugate action, **measured, not imposed** |
@@ -18,6 +24,8 @@ Two tooth flanks (an epicycloid face and a hypocycloid flank, generated independ
 | arc length in contact, gear 2 flank | 50.8940 µm | ratio 2.133333, slip 57.68 µm (53% of the longer flank) |
 | peak sliding-speed ratio (cycloidal / involute) | 0.741191560 | |
 | peak \|PC\| ratio (cycloidal / involute) | 0.741191560 | identical to 6×10⁻¹³ |
+
+![Falsification figure](results/fig0_no_rolling.png)
 
 ## Three independent falsifications:
 
@@ -66,4 +74,25 @@ analysis/make_figure.py — generates the summary figure
 tests/test_no_rolling.py — 19 tests, including two regression tests for the branch-selection bug above
 results/ — results.json and fig0_no_rolling.png from the last verified run
 
-![Falsification figure](results/fig0_no_rolling.png)
+## Running it
+
+The easiest way — one command runs the whole pipeline:
+
+```bash
+pip install -r requirements.txt
+python main.py
+```
+
+This regenerates `results/results.json`, `results/run.npz`, and the figure above.
+
+To check correctness instead of regenerating results:
+
+```bash
+pytest tests/ -q
+```
+
+This should print `19 passed`.
+
+Verified to reproduce identically (all physical quantities agreeing to 15
+significant figures) on Windows/Python 3.13 and Linux/Python 3.11 with
+different BLAS backends.
