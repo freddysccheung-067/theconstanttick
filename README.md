@@ -65,3 +65,5 @@ analysis/falsify.py — runs the falsification experiment end-to-end
 analysis/make_figure.py — generates the summary figure
 tests/test_no_rolling.py — 19 tests, including two regression tests for the branch-selection bug above
 results/ — results.json and fig0_no_rolling.png from the last verified run
+
+![Falsification figure](results/fig0_no_rolling.png)
