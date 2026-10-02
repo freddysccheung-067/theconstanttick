@@ -1,5 +1,7 @@
 # The Constant Tick
 
+[![tests](https://github.com/freddysccheung-067/theconstanttick/actions/workflows/tests.yml/badge.svg)](https://github.com/freddysccheung-067/theconstanttick/actions/workflows/tests.yml)
+
 Numerical falsification of the "cycloidal gear teeth roll" claim — Working Paper 0 of a larger project on watch-gear mesh efficiency.
 
 **Author:** Freddy Cheung, 2026
