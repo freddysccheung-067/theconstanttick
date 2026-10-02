@@ -15,7 +15,8 @@ import falsify as F
 
 RESULTS = os.path.join(os.path.dirname(__file__), "..", "results")
 
-if not os.path.exists(os.path.join(RESULTS, "results.json")):
+if not (os.path.exists(os.path.join(RESULTS, "results.json"))
+        and os.path.exists(os.path.join(RESULTS, "run.npz"))):
     F.main()
 R = json.load(open(os.path.join(RESULTS, "results.json")))
 R1, R2, r = F.R1, F.R2, F.R2 / 2
