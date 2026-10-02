@@ -2,9 +2,11 @@
 
 Numerical falsification of the "cycloidal gear teeth roll" claim — Working Paper 0 of a larger project on watch-gear mesh efficiency.
 
+**Author:** Freddy Cheung, 2026
+
 Horological texts, manufacturer pages, and forum consensus justify the cycloidal tooth profile used in watch gearing with a single claim: the teeth *roll* over one another rather than sliding, and rolling means less friction. This is repeated by people who know a great deal about watches. **The load-bearing part of it is false**, and this repository proves it three independent ways, from first principles, with no assumptions borrowed from gear theory.
 
- The result
+## The result
 
 Two tooth flanks (an epicycloid face and a hypocycloid flank, generated independently) are handed to a contact solver as bare parametric curves. The solver finds where they touch and how they move — nothing about gear ratios, contact paths, or sliding is assumed going in. All of it comes out the other end as a *result*.
 
@@ -29,9 +31,15 @@ Two tooth flanks (an epicycloid face and a hypocycloid flank, generated independ
 
 ## Three independent falsifications:
 
-1. Geometry alone, no velocities Two tooth surfaces in contact for an entire mesh must present equal arc length if they're rolling on one another — a wheel lays down exactly as much road as it has rim. Here they don't: 108.57 µm vs 50.89 µm, a 53% mismatch. This alone falsifies the claim, without computing a single velocity.
-2. Sliding speed is nonzero almost everywhere It exceeds 1% of its peak over 99.0% of the mesh for *both* profiles, vanishing only at the single pitch point. Nothing rolls — cycloidal or involute.
-3. Cross-check Sliding speed computed three independent ways — rigid-body kinematics, the closed-form identity (ω₁+ω₂)|PC|, and the rate at which each tooth surface scrubs through contact — agree to ~10⁻¹¹. The third computation runs through the actual tooth shape and the first doesn't, so their agreement demonstrates that the profile cancels out of the sliding speed entirely.
+1. **Geometry alone, no velocities**
+
+   Two tooth surfaces in contact for an entire mesh must present equal arc length if they're rolling on one another — a wheel lays down exactly as much road as it has rim. Here they don't: 108.57 µm vs 50.89 µm, a 53% mismatch. This alone falsifies the claim, without computing a single velocity.
+2. **Sliding speed is nonzero almost everywhere**
+
+   It exceeds 1% of its peak over 99.0% of the mesh for *both* profiles, vanishing only at the single pitch point. Nothing rolls — cycloidal or involute.
+3. **Cross-check**
+
+   Sliding speed computed three independent ways — rigid-body kinematics, the closed-form identity (ω₁+ω₂)|PC|, and the rate at which each tooth surface scrubs through contact — agree to ~10⁻¹¹. The third computation runs through the actual tooth shape and the first doesn't, so their agreement demonstrates that the profile cancels out of the sliding speed entirely.
 
 So what does the cycloid actually do better? The peak sliding-speed ratio between the two profiles equals the peak-|PC| ratio to 6×10⁻¹³. The cycloid does not slide less per unit of distance from the pitch point — it slides at *exactly* the same rate as the involute. Its entire advantage is that its contact path stays closer to the pitch point. **Contact-path geometry, not rolling.**
 
@@ -39,8 +47,10 @@ So what does the cycloid actually do better? The peak sliding-speed ratio betwee
 
 Each flank is generated in its own body frame from the classical rolling construction (epicycloid, hypocycloid, involute), and then **the construction is discarded** — the solver receives only a parametric curve `c(t)` and its derivative. For a point `u` on flank 1, it solves for `(v, θ₁, θ₂)` satisfying:
 
-P₁(u; θ₁) − P₂(v; θ₂) = 0 (the points coincide — 2 equations)
-t₁(u; θ₁) × t₂(v; θ₂) = 0 (the tangents are parallel — 1 equation)
+```
+P₁(u; θ₁) − P₂(v; θ₂) = 0     (the points coincide — 2 equations)
+t₁(u; θ₁) × t₂(v; θ₂) = 0     (the tangents are parallel — 1 equation)
+```
 
 θ₂ is a free unknown in this system, not an input — so the velocity ratio is *measured*, and likewise for the path of contact.
 
@@ -56,14 +66,18 @@ Two regression tests (`test_anchoring_at_the_cusp_silently_picks_the_wrong_branc
 
 - Below r/R₂ ≈ 0.29 the contact ratio falls under 1 and the drive becomes discontinuous; the closed-form arc-length check is exercised only over the physically valid band r/R₂ ∈ [0.30, 0.50], where it holds at every grid density tested.
 - This is Working Paper 0 of a larger project. It establishes the mechanism (contact-path geometry, not rolling); it does not yet compute overall mesh efficiency, tolerance sensitivity, or the friction-optimal generating-circle theorem — those are separate, ongoing work.
+- This is a computational study only; no physical gear has been measured.
 
 ## Repository layout
 
+```
+main.py — one-command runner (regenerates results, then prints a summary)
 src/meshing.py — the contact solver (flank generation, tangency solving, arc-length machinery)
 analysis/falsify.py — runs the falsification experiment end-to-end
 analysis/make_figure.py — generates the summary figure
 tests/test_no_rolling.py — 19 tests, including two regression tests for the branch-selection bug above
 results/ — results.json and fig0_no_rolling.png from the last verified run
+```
 
 ## Running it
 
